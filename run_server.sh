@@ -1,4 +1,11 @@
 #!/bin/bash
-osrm-extract france-latest.osm.pbf
-osrm-prepare france-latest.osrm
-osrm-routed france-latest.osrm
+
+if ! ( test -f "${DOWNLOADED_FILE}.osm.pbf" )
+then 
+	# No archive. get ENV variable and download
+	wget $ARCHIVE_URL
+	osrm-extract "${DOWNLOADED_FILE}.osm.pbf"
+	osrm-prepare "${DOWNLOADED_FILE}.osrm"
+fi
+	
+osrm-routed ${DOWNLOADED_FILE}.osrm
